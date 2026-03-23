@@ -3,7 +3,7 @@
 
 # Project wide
 build/**
-build-window/**
+build-windows/**
 bin/**
 obj/**
 CMakeCache.txt
