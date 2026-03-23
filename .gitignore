@@ -1,0 +1,39 @@
+# User specific
+.clangd
+
+# Project wide
+build/**
+build-window/**
+bin/**
+obj/**
+CMakeCache.txt
+
+# IDEs
+compile_commands.json
+.cache/
+.clangd/
+.vs/
+*.user
+*.suo
+*.sln.docstates
+.vscode/
+[Dd]ebug/**
+[Rr]elease/**
+*.pdb
+*.ilk
+*.ldb
+.history/**
+
+
+# Vim/Neovim
+*.swp
+
+# Compilers
+ipch/**
+*.aps
+*.ncb
+*.opendb
+*.sdf
+*.cache
+*.pch
+
