@@ -12,7 +12,7 @@ set(PROJECT_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 project(SOME_NAME VERSION 1.0 LANGUAGES CXX)
 
-find_package(raylib REQUIRED)
+find_package(raylib REQUIRED CONFIGURE_DEPENDS)
 # Get the headers and source files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 

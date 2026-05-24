@@ -1,0 +1,32 @@
+{
+   Suppress_Raylib_Internal_Leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:InitWindow
+}
+
+{
+   Suppress_OpenGL_Driver_Leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*/libGL*.so*
+}
+
+{
+   Suppress_X11_Driver_Leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*/libX11*.so*
+}
+
+{
+   Suppress_Dr_Audio_Leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:InitAudioDevice
+}
+
