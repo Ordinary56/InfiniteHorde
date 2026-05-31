@@ -1,0 +1,36 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class RaylibPlatform {
+	+{static} GetMousePosition() : Vec2
+	+shouldClose() : bool
+	+getDeltaTime() : float
+	+initWindow(int w, int h, const char* title) : void
+	+shutdownWindow() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

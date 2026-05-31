@@ -15,8 +15,8 @@ constexpr T lerp(const T &a, const T &b, U t) {
 
 template <> inline Vec2 lerp(const Vec2 &a, const Vec2 &b, float t) {
   Vec2 res;
-  res.x = a.x + (b.x - a.x) * t;
-  res.y = a.y + (b.y - a.y) * t;
+  res.x = (b.x - a.x) * t;
+  res.y = (b.y - a.y) * t;
   return res;
 }
 

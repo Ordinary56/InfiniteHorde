@@ -1,0 +1,40 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class UIElement {
+	+UIElement(const Vec2 position, Color_rgb color)
+	+~UIElement()
+	#m_color : Color_rgb
+	#m_position : Vec2
+	+isVisible() : bool
+	#m_visible : bool
+	+{abstract} draw(Renderer& renderer) : void {query}
+	+setVisible(bool value) : void
+	+{abstract} update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

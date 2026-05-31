@@ -1,6 +1,9 @@
 #include "entity/projectileManager.h"
 #include "core/gameWorld.h"
+#include "entity/enemy.h"
 #include "entity/projectile.h"
+#include "helpers/utils.hpp"
+#include <iostream>
 #include <utility>
 ProjectileManager::ProjectileManager()
     : m_projectiles(new Projectile[m_capacity]) {}
@@ -22,6 +25,17 @@ void ProjectileManager::draw(Renderer &renderer) const {
   for (std::size_t i = 0; i < m_count; i++) {
     m_projectiles[i].draw(renderer);
   }
+}
+
+bool ProjectileManager::checkEnemyHit(Enemy &enemy) {
+  for (std::size_t i = 0; i < m_count; i++) {
+    if (enemy.checkPlayerCollision(m_projectiles[i].getHitBox())) {
+      enemy.takeDamage(m_projectiles[i].getDamage());
+      remove(i);
+      return true;
+    }
+  }
+  return false;
 }
 
 void ProjectileManager::remove(std::size_t index) {

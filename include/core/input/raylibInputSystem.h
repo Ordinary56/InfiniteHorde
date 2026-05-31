@@ -13,6 +13,7 @@ public:
   void mapKey(InputAction action, int key) override;
   bool getKeyPressed(InputAction action) override;
   bool getKeyDown(InputAction action) override;
+
 private:
   RaylibInputSystem();
 };

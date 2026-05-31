@@ -1,0 +1,33 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Handler <template<typename TOut, typename ... Args>> {
+	+function<TOut(Args ...)
+	+id : std::size_t
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

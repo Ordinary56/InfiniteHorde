@@ -1,0 +1,43 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class GameplayScene {
+	+GameplayScene()
+	+~GameplayScene()
+	-m_cameraController : CameraController
+	-m_enemyManager : EnemyManager
+	-m_world : GameWorld
+	-m_player : Player
+	-m_projectileManager : ProjectileManager
+	-m_spawnTimer : Timer
+	-m_score : int
+	+draw(Renderer& renderer) : void {query}
+	-drawUI(Renderer& renderer) : void {query}
+	+update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

@@ -22,6 +22,10 @@ public:
   // @param renderer - The current backend renderer
   void draw(Renderer &renderer) const;
 
+#ifdef CPORTA
+  const IScene* getScene() const { return m_currentScene; }
+#endif
+
 private:
   static bool m_requestedSceneChange;
   IScene *m_currentScene = nullptr;

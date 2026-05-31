@@ -1,0 +1,74 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class EnemyManager {
+	+EnemyManager()
+	+~EnemyManager()
+	-m_enemies : Enemy*
+	-m_enemyKilled : EventManager<void>
+	+onEnemyKilled() : EventManager<void>&
+	+begin() : const_iterator {query}
+	+end() : const_iterator {query}
+	+begin() : iterator
+	+end() : iterator
+	-m_capacity : std::size_t
+	-m_count : std::size_t
+	+size() : std::size_t {query}
+	+addEnemy(Enemy* enemy) : void
+	+removeEnemy(std::size_t index) : void
+	-resize() : void
+	+update() : void
+}
+
+
+class EnemyManager::const_iterator {
+	+const_iterator()
+	+const_iterator(const Enemy* p)
+	+operator*() : Enemy& {query}
+	+operator->() : Enemy* {query}
+}
+
+
+class EnemyManager::iterator {
+	+iterator()
+	+iterator(Enemy* p)
+	+operator*() : Enemy& {query}
+	+operator->() : Enemy* {query}
+	-ptr : Enemy*
+	+operator!=(iterator other) : bool {query}
+	+operator==(iterator other) : bool {query}
+	+operator++(int) : iterator
+	+operator++() : iterator&
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+EnemyManager +-- EnemyManager::const_iterator
+
+
+EnemyManager +-- EnemyManager::iterator
+
+
+
+
+@enduml

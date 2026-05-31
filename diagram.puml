@@ -1,0 +1,712 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class CameraController {
+	+CameraController()
+	+CameraController(const Vec2& offset_vec)
+	+~CameraController()
+	-m_camera : CameraData
+	+getCamera() : CameraData& {query}
+	+setOffset(const Vec2& new_offset) : void
+	+setTarget(const Vec2& target_vec) : void
+}
+
+
+class ConsoleInputSystem {
+	+ConsoleInputSystem(std::istream& input)
+	+getKeyDown(InputAction action) : bool
+	+getKeyPressed(InputAction action) : bool
+	-m_previousState : bool[]
+	-m_input : std::istream&
+	+mapKey(InputAction action, int key) : void
+	-processCommand(const std::string& command) : void
+	+update() : void
+}
+
+
+class ConsolePlatform {
+	-m_windowShouldClose : bool
+	+shouldClose() : bool
+	+getDeltaTime() : float
+	+initWindow(int w, int h, const char* title) : void
+	+shutdownWindow() : void
+}
+
+
+class ConsoleRenderer {
+	-measureText(const char* text, int fontSize) : int
+	-beginFrame() : void
+	-clear(Color_rgb color) : void
+	-drawCircle(int centerX, int centerY, float radius, Color_rgb color) : void
+	-drawRectangle(int x, int y, int width, int height, Color_rgb color) : void
+	-drawText(const std::string& text, int x, int y, int fontSize, Color_rgb color) : void
+	-endFrame() : void
+}
+
+
+class Enemy {
+	+Enemy()
+	+Enemy(float x, float y)
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_lastPosition : Vec2
+	+checkPlayerCollision(const Rect& hitbox) : bool
+	+isDead() : bool {query}
+	-m_isDead : bool
+	-m_health : float
+	-m_speed : float
+	+draw(Renderer& renderer) : void {query}
+	+takeDamage(float value) : void
+	+update(float dt) : void
+	+walkTo(const Vec2& direction) : void
+}
+
+
+class EnemyManager {
+	+EnemyManager()
+	+~EnemyManager()
+	-m_enemies : Enemy*
+	-m_enemyKilled : EventManager<void>
+	+onEnemyKilled() : EventManager<void>&
+	+begin() : const_iterator {query}
+	+end() : const_iterator {query}
+	+begin() : iterator
+	+end() : iterator
+	-m_capacity : std::size_t
+	-m_count : std::size_t
+	+size() : std::size_t {query}
+	+addEnemy(Enemy* enemy) : void
+	+removeEnemy(std::size_t index) : void
+	-resize() : void
+	+update() : void
+}
+
+
+class EnemyManager::const_iterator {
+	+const_iterator()
+	+const_iterator(const Enemy* p)
+	+operator*() : Enemy& {query}
+	+operator->() : Enemy* {query}
+}
+
+
+class EnemyManager::iterator {
+	+iterator()
+	+iterator(Enemy* p)
+	+operator*() : Enemy& {query}
+	+operator->() : Enemy* {query}
+	-ptr : Enemy*
+	+operator!=(iterator other) : bool {query}
+	+operator==(iterator other) : bool {query}
+	+operator++(int) : iterator
+	+operator++() : iterator&
+}
+
+
+abstract class Entity {
+	+Entity()
+	+Entity(float x, float y)
+	+Entity(const Entity& other)
+	+Entity(Entity&& other)
+	+~Entity()
+	+operator=(const Entity& other) : Entity&
+	#m_hitBox : Rect
+	#m_hitBox : Rect
+	#m_hitBox : Rect
+	#m_hitBox : Rect
+	#m_hitBox : Rect
+	+getHitBox() : Rect& {query}
+	#m_position : Vec2
+	#m_position : Vec2
+	#m_position : Vec2
+	#m_position : Vec2
+	+getPos() : Vec2& {query}
+	+clampToWorld(const Rect& rect) : void
+	+{abstract} draw(Renderer& renderer) : void {query}
+	+setPos(float x, float y) : void
+	+{abstract} update(float dt) : void
+}
+
+
+class EventManager <template<typename TOut=void, typename ... Args>> {
+	+EventManager()
+	+~EventManager()
+	-m_handlers : Handler<TOut, Args ...>*
+	+Subscribe(std::function<TOut ( Args ... )> func) : std::size_t
+	-m_capacity : std::size_t
+	-m_nextId : std::size_t
+	-m_size : std::size_t
+	+Invoke(CallArgs&& ... args) : void
+	+Unsubscribe(std::size_t id) : void
+	-resize() : void
+}
+
+
+class Game {
+	+Game(Platform& platform, Renderer& renderer)
+	+~Game()
+	-m_platform : Platform&
+	-m_renderer : Renderer&
+	-m_sceneManager : SceneManager
+	-{static} m_pendingScene : static SCENES
+	-{static} m_sceneChangeRequested : static bool
+	-{static} m_shutdownRequested : static bool
+	+{static} requestQuit() : void
+	+{static} requestSceneChange(SCENES scene) : void
+	+run() : void
+}
+
+
+class GameWorld {
+	+GameWorld()
+	-m_worldBoundary : Rect
+	-m_worldBoundary : Rect
+	-m_worldBoundary : Rect
+	-m_worldBoundary : Rect
+	-m_worldBoundary : Rect
+	+getWorldBoundary() : Rect& {query}
+	+draw(Renderer& renderer) : void {query}
+}
+
+
+class GameplayScene {
+	+GameplayScene()
+	+~GameplayScene()
+	-m_cameraController : CameraController
+	-m_enemyManager : EnemyManager
+	-m_world : GameWorld
+	-m_player : Player
+	-m_projectileManager : ProjectileManager
+	-m_spawnTimer : Timer
+	-m_score : int
+	+draw(Renderer& renderer) : void {query}
+	-drawUI(Renderer& renderer) : void {query}
+	+update(float dt) : void
+}
+
+
+abstract class IScene {
+	+~IScene()
+	+{abstract} draw(Renderer& renderer) : void {query}
+	+{abstract} update(float dt) : void
+}
+
+
+abstract class InputSystem {
+	+~InputSystem()
+	+{abstract} getKeyDown(InputAction action) : bool
+	+{abstract} getKeyPressed(InputAction action) : bool
+	#m_currentState : bool[]
+	#m_pressedState : bool[]
+	#m_keyMaps : int[]
+	+{abstract} mapKey(InputAction action, int key) : void
+	+{abstract} update() : void
+}
+
+
+class MainMenuScene {
+	+MainMenuScene()
+	+~MainMenuScene()
+	-m_container : UIContainer
+	-createLayout() : void
+	+draw(Renderer& renderer) : void {query}
+	+update(float dt) : void
+}
+
+
+class Player {
+	+Player()
+	+Player(float x, float y)
+	+Player(Player&& other)
+	+~Player()
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	+getHitBox() : Rect& {query}
+	-m_damageTimer : Timer
+	-m_weapon : Weapon
+	+getWeapon() : Weapon&
+	+isDead() : bool {query}
+	-m_isDead : bool
+	-m_health : float
+	-m_speed : float
+	+getHealth() : float& {query}
+	+draw(Renderer& renderer) : void {query}
+	+takeDamage(float damage) : void
+	+update(float dt) : void
+}
+
+
+class Projectile {
+	+Projectile()
+	+Projectile(float x, float y)
+	-m_direction : Vec2
+	+getDamage() : float {query}
+	-m_damage : float
+	-m_speed : float
+	+draw(Renderer& renderer) : void {query}
+	+setDirection(const Vec2& angle) : void
+	+setSpeed(float value) : void
+	+update(float dt) : void
+}
+
+
+class ProjectileManager {
+	+ProjectileManager()
+	+~ProjectileManager()
+	-m_projectiles : Projectile*
+	+checkEnemyHit(const Rect& hitbox) : bool
+	-m_capacity : std::size_t
+	-m_count : std::size_t
+	+checkInBounds(const GameWorld& world) : void
+	+draw(Renderer& renderer) : void {query}
+	+remove(std::size_t index) : void
+	+spawn(const Projectile& proj) : void
+	+update(float dt) : void
+}
+
+
+class RaylibInputSystem {
+	-RaylibInputSystem()
+	+{static} instance() : RaylibInputSystem&
+	+getKeyDown(InputAction action) : bool
+	+getKeyPressed(InputAction action) : bool
+	+mapKey(InputAction action, int key) : void
+	+update() : void
+}
+
+
+class RaylibPlatform {
+	+{static} GetMousePosition() : Vec2
+	+shouldClose() : bool
+	+getDeltaTime() : float
+	+initWindow(int w, int h, const char* title) : void
+	+shutdownWindow() : void
+}
+
+
+class RaylibRenderer {
+	+{static} toRaylibCamera(const CameraData& camera) : Camera2D
+	+measureText(const char* text, int fontSize) : int
+	+beginCamera(const CameraData& camera) : void
+	+beginFrame() : void
+	+clear(Color_rgb color) : void
+	+drawCircle(int centerX, int centerY, float radius, Color_rgb color) : void
+	+drawRectangle(int x, int y, int width, int height, Color_rgb color) : void
+	+drawText(const std::string& text, int x, int y, int fontSize, Color_rgb color) : void
+	+endCamera() : void
+	+endFrame() : void
+}
+
+
+class SceneManager {
+	+SceneManager()
+	+~SceneManager()
+	-m_currentScene : IScene*
+	-{static} m_requestedSceneChange : static bool
+	+draw(Renderer& renderer) : void {query}
+	+setScene(SCENES scene) : void
+	+update(float dt) : void
+}
+
+
+class Settings {
+	-Settings()
+	+{static} instance() : Settings&
+	+getFontSize() : int {query}
+	+getWindowHeight() : int {query}
+	+getWindowWidth() : int {query}
+	-m_fontSize : int
+	-m_windowHeight : int
+	-m_windowWidth : int
+	+setWindowHeight(int height) : void
+	+setWindowWidth(int width) : void
+}
+
+
+class SpriteManager {
+	+SpriteManager()
+	+~SpriteManager()
+	+getSprite(const std::string& name) : Image*
+	-m_sprites : SpriteEntry*
+	-m_capacity : std::size_t
+	-m_size : std::size_t
+	-grow() : void
+	+loadSprites(const std::string& folder) : void
+}
+
+
+class Timer {
+	+Timer()
+	+isFinished() : bool {query}
+	+isRunning() : bool {query}
+	-m_finished : bool
+	-m_running : bool
+	-m_duration : float
+	-m_elapsed : float
+	+reset() : void
+	+start(float duration) : void
+	+update(float dt) : void
+}
+
+
+class UIButton {
+	+UIButton(Vec2 position, Vec2 size, Color_rgb color, const std::string& text)
+	+UIButton(const UIButton& other)
+	-m_onClickedEvent : EventManager<void>
+	+ButtonClicked() : EventManager<void>&
+	+operator=(const UIButton& other) : UIButton&
+	-m_size : Vec2
+	-m_text : std::string
+	+TriggerClick() : void
+	+draw(Renderer& renderer) : void {query}
+	+setText(const char* newText) : void
+	+update(float dt) : void
+}
+
+
+class UIButtonBuilder {
+	-m_config : ButtonConfig
+	+build() : UIButton* {query}
+	+color(Color_rgb color) : UIButtonBuilder&
+	+position(Vec2 pos) : UIButtonBuilder&
+	+size(Vec2 size) : UIButtonBuilder&
+	+text(const std::string& text) : UIButtonBuilder&
+}
+
+
+class UIContainer {
+	+UIContainer()
+	+~UIContainer()
+	-m_layoutDir : LayoutDirection
+	-m_children : UIElement**
+	-spacing : float
+	-m_size : std::size_t
+	-m_size : std::size_t
+	-m_size : std::size_t
+	+add(UIElement* child) : void
+	+draw(Renderer& renderer) : void {query}
+	+layout() : void
+	+update(float dt) : void
+}
+
+
+abstract class UIElement {
+	+UIElement(const Vec2 position, Color_rgb color)
+	+~UIElement()
+	#m_color : Color_rgb
+	#m_position : Vec2
+	+isVisible() : bool
+	#m_visible : bool
+	+{abstract} draw(Renderer& renderer) : void {query}
+	+setVisible(bool value) : void
+	+{abstract} update(float dt) : void
+}
+
+
+class Weapon {
+	+Weapon()
+	+Weapon(float x, float y)
+	-m_projectileManager : ProjectileManager*
+	-m_mouseToWorldPos : Vec2
+	+draw(Renderer& renderer) : void {query}
+	+setMousePosition(const Vec2& position) : void
+	+setProjectileManager(ProjectileManager* manager) : void
+	+update(float dt) : void
+}
+
+
+enum InputAction {
+	ActionCount
+	MoveDown
+	MoveLeft
+	MoveRight
+	MoveUp
+	Shoot
+}
+
+
+enum LayoutDirection {
+	Horizontal
+	Vertical
+}
+
+
+enum SCENES {
+	GAMEPLAY
+	GAME_OVER
+	MAIN_MENU
+}
+
+
+class ButtonConfig {
+	+color : Color_rgb
+	+pos : Vec2
+	+size : Vec2
+	+text : std::string
+}
+
+
+class CameraData {
+	+offset : Vec2
+	+target : Vec2
+	+rotation : float
+	+zoom : float
+}
+
+
+class Color_rgb {
+	+a : unsigned char
+	+b : unsigned char
+	+g : unsigned char
+	+r : unsigned char
+}
+
+
+class Handler <template<typename TOut, typename ... Args>> {
+	+function<TOut(Args ...)
+	+id : std::size_t
+}
+
+
+abstract class Platform {
+	+~Platform()
+	+{abstract} shouldClose() : bool
+	+{abstract} getDeltaTime() : float
+	+{abstract} initWindow(int w, int h, const char* title) : void
+	+{abstract} shutdownWindow() : void
+}
+
+
+class Rect {
+	+h : float
+	+w : float
+	+x : float
+	+y : float
+}
+
+
+abstract class Renderer {
+	+~Renderer()
+	+{abstract} measureText(const char* text, int fontSize) : int
+	+{abstract} beginCamera(const CameraData& camera) : void
+	+{abstract} beginFrame() : void
+	+{abstract} clear(Color_rgb color) : void
+	+{abstract} drawCircle(int centerX, int centerY, float radius, Color_rgb color) : void
+	+{abstract} drawRectangle(int x, int y, int width, int height, Color_rgb color) : void
+	+{abstract} drawText(const std::string& text, int x, int y, int fontSize, Color_rgb color) : void
+	+{abstract} endCamera() : void
+	+{abstract} endFrame() : void
+}
+
+
+class SpriteEntry {
+	+image : Image
+	+name : char*
+}
+
+
+class Vec2 {
+	+x : float
+	+y : float
+}
+
+
+class Vec2i {
+	+x : int
+	+y : int
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+Entity <|-- Enemy
+
+
+Entity <|-- Player
+
+
+Entity <|-- Projectile
+
+
+Entity <|-- Weapon
+
+
+IScene <|-- GameplayScene
+
+
+IScene <|-- MainMenuScene
+
+
+InputSystem <|-- ConsoleInputSystem
+
+
+InputSystem <|-- RaylibInputSystem
+
+
+Platform <|-- ConsolePlatform
+
+
+Platform <|-- RaylibPlatform
+
+
+Renderer <|-- ConsoleRenderer
+
+
+Renderer <|-- RaylibRenderer
+
+
+UIElement <|-- UIButton
+
+
+
+
+
+/' Aggregation relationships '/
+
+ButtonConfig *-- Color_rgb
+
+
+ButtonConfig "2" *-- Vec2
+
+
+CameraController *-- CameraData
+
+
+CameraData "2" *-- Vec2
+
+
+Enemy "4" *-- Rect
+
+
+Enemy *-- Vec2
+
+
+EnemyManager o-- Enemy
+
+
+EnemyManager *-- EventManager
+
+
+EnemyManager::iterator o-- Enemy
+
+
+Entity "5" *-- Rect
+
+
+Entity "4" *-- Vec2
+
+
+EventManager *-- Handler
+
+
+Game *-- Platform
+
+
+Game *-- Renderer
+
+
+Game *-- SCENES
+
+
+Game *-- SceneManager
+
+
+GameWorld "5" *-- Rect
+
+
+GameplayScene *-- CameraController
+
+
+GameplayScene *-- EnemyManager
+
+
+GameplayScene *-- GameWorld
+
+
+GameplayScene *-- Player
+
+
+GameplayScene *-- ProjectileManager
+
+
+GameplayScene *-- Timer
+
+
+MainMenuScene *-- UIContainer
+
+
+Player "4" *-- Rect
+
+
+Player *-- Timer
+
+
+Player *-- Weapon
+
+
+Projectile *-- Vec2
+
+
+ProjectileManager o-- Projectile
+
+
+SceneManager o-- IScene
+
+
+SpriteManager o-- SpriteEntry
+
+
+UIButton *-- EventManager
+
+
+UIButton *-- Vec2
+
+
+UIButtonBuilder *-- ButtonConfig
+
+
+UIContainer *-- LayoutDirection
+
+
+UIContainer o-- UIElement
+
+
+UIElement *-- Color_rgb
+
+
+UIElement *-- Vec2
+
+
+Weapon o-- ProjectileManager
+
+
+Weapon *-- Vec2
+
+
+
+
+
+
+/' Nested objects '/
+
+EnemyManager +-- EnemyManager::const_iterator
+
+
+EnemyManager +-- EnemyManager::iterator
+
+
+
+
+@enduml

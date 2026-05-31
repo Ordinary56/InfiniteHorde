@@ -1,0 +1,39 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Vec2 {
+	+x : float
+	+y : float
+}
+
+
+class Vec2i {
+	+x : int
+	+y : int
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

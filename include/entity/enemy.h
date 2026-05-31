@@ -19,6 +19,6 @@ private:
   Rect m_hitBox = {0, 0, 50, 50};
   bool m_isDead = false;
   float m_speed = 3.0f;
-  Vec2 m_lastPosition;
+  Vec2 m_targetPosition;
   float m_health = 50.0f;
 };

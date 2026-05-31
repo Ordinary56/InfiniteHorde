@@ -2,7 +2,7 @@
 #include "core/camera/cameraData.h"
 #include <raylib.h>
 
-static Camera2D toRaylibCamera(const CameraData &camera) {
+Camera2D RaylibRenderer::toRaylibCamera(const CameraData &camera) {
   Camera2D cam{};
   cam.offset = {camera.offset.x, camera.offset.y};
   cam.target = {camera.target.x, camera.target.y};

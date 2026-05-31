@@ -1,0 +1,33 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class SpriteEntry {
+	+image : Image
+	+name : char*
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

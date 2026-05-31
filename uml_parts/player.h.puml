@@ -1,0 +1,51 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Player {
+	+Player()
+	+Player(float x, float y)
+	+Player(Player&& other)
+	+~Player()
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	-m_hitBox : Rect
+	+getHitBox() : Rect& {query}
+	-m_damageTimer : Timer
+	-m_weapon : Weapon
+	+getWeapon() : Weapon&
+	+isDead() : bool {query}
+	-m_isDead : bool
+	-m_health : float
+	-m_speed : float
+	+getHealth() : float& {query}
+	+draw(Renderer& renderer) : void {query}
+	+takeDamage(float damage) : void
+	+update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

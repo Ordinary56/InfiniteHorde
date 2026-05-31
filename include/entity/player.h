@@ -27,3 +27,4 @@ private:
   bool m_isDead = false;
   Timer m_damageTimer;
 };
+

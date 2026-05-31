@@ -17,6 +17,6 @@ public:
 
 protected:
   int m_keyMaps[InputAction::ActionCount];
-  bool m_currentState[InputAction::ActionCount];
+  bool m_keyDownState[InputAction::ActionCount];
   bool m_pressedState[InputAction::ActionCount];
 };

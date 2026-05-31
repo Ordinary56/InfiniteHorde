@@ -2,6 +2,9 @@
 #include "core/math/rect.h"
 #include "core/settings.h"
 #include "helpers/utils.hpp"
+#ifdef CPORTA
+#include "platform/consolePlatform.h"
+#endif
 #include <cmath>
 
 UIButton::UIButton(Vec2 position, Vec2 size, Color_rgb color,
@@ -15,8 +18,11 @@ void UIButton::update(float dt) {
 #ifndef CPORTA
   Vector2 temp = GetMousePosition();
   mouse_pos = {temp.x, temp.y};
+#else
+  mouse_pos = ConsolePlatform::getMousePosition();
 #endif
   if (utils::checkMouseInRect(mouse_pos, rect)) {
+#ifndef CPORTA
     // set the mouse to pointing
     SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
     // check if user clicked left click
@@ -24,6 +30,11 @@ void UIButton::update(float dt) {
       // TODO: fire an associated event
       TriggerClick();
     }
+#else
+    if (ConsolePlatform::isMouseButtonPressed()) {
+      TriggerClick();
+    }
+#endif
   }
 }
 

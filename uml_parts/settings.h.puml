@@ -1,0 +1,41 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Settings {
+	-Settings()
+	+{static} instance() : Settings&
+	+getFontSize() : int {query}
+	+getWindowHeight() : int {query}
+	+getWindowWidth() : int {query}
+	-m_fontSize : int
+	-m_windowHeight : int
+	-m_windowWidth : int
+	+setWindowHeight(int height) : void
+	+setWindowWidth(int width) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

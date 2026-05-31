@@ -1,9 +1,17 @@
 #include "scene/gameplayScene.h"
 #include "core/game.h"
+#ifndef CPORTA
 #include "core/input/raylibInputSystem.h"
+#include "core/renderer/raylibRenderer.h"
+#else
+#include "core/input/consoleInputSystem.h"
+#include "core/renderer/consoleRenderer.h"
+#include "platform/consolePlatform.h"
+#endif
 #include "core/renderer/renderer.h"
 #include "core/settings.h"
 #include "entity/enemy.h"
+#include "helpers/utils.hpp"
 #include <algorithm>
 #include <random>
 #include <sstream>
@@ -43,13 +51,27 @@ void GameplayScene::update(float dt) {
   }
 #ifndef CPORTA
   RaylibInputSystem &input = RaylibInputSystem::instance();
+#else
+  ConsoleInputSystem &input = ConsoleInputSystem::instance();
 #endif
   input.update();
   m_player.update(dt);
-  for (auto enemy : m_enemyManager) {
+#ifndef CPORTA
+  Vector2 mouseToWorldPos = GetScreenToWorld2D(
+      GetMousePosition(),
+      RaylibRenderer::toRaylibCamera(m_cameraController.getCamera()));
+  m_player.getWeapon().setMousePosition({mouseToWorldPos.x, mouseToWorldPos.y});
+#else
+  Vec2 mousePos = ConsolePlatform::getMousePosition();
+  m_player.getWeapon().setMousePosition(mousePos);
+#endif
+  m_player.getWeapon().update(dt);
+  for (auto &enemy : m_enemyManager) {
     enemy.walkTo(m_player.getPos());
     enemy.update(dt);
   }
+  m_enemyManager.update();
+  m_projectileManager.update(dt);
   bool enemyCollided = std::any_of(
       m_enemyManager.begin(), m_enemyManager.end(), [this](Enemy &enemy) {
         return enemy.checkPlayerCollision(m_player.getHitBox());
@@ -57,6 +79,10 @@ void GameplayScene::update(float dt) {
   if (enemyCollided) {
     m_player.takeDamage(2.0f);
   }
+  for (auto &enemy : m_enemyManager) {
+    m_projectileManager.checkEnemyHit(enemy);
+  }
+  m_projectileManager.checkInBounds(m_world);
   m_player.clampToWorld(boundary);
   // Always follow player
   m_cameraController.setTarget(m_player.getPos());
@@ -73,9 +99,10 @@ void GameplayScene::draw(Renderer &renderer) const {
   renderer.beginCamera(m_cameraController.getCamera());
   m_world.draw(renderer);
   m_player.draw(renderer);
-  for (auto enemy : m_enemyManager) {
+  for (auto &enemy : m_enemyManager) {
     enemy.draw(renderer);
   }
+  m_projectileManager.draw(renderer);
   renderer.endCamera();
   drawUI(renderer);
 }
@@ -83,7 +110,8 @@ void GameplayScene::draw(Renderer &renderer) const {
 void GameplayScene::drawUI(Renderer &renderer) const {
   Settings &settings = Settings::instance();
   std::stringstream ss;
-  ss << "HEALTH: " << m_player.getHealth();
+  ss << "HEALTH: " << m_player.getHealth() << "\n";
+  ss << "SCORE: " << m_score << "\n";
 
   renderer.drawText(ss.str(), 20, 20, settings.getFontSize(), COLOR_BLACK);
 }

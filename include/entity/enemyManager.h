@@ -34,6 +34,7 @@ public:
   const_iterator end() const;
 
   inline std::size_t size() const { return m_capacity; }
+  inline std::size_t count() const { return m_count; }
 
   class iterator : public std::iterator<std::forward_iterator_tag, Enemy> {
   public:

@@ -1,10 +1,13 @@
 #pragma once
 #include "renderer.h"
+class Camera2D;
 class RaylibRenderer : public Renderer {
 public:
   void beginFrame() override;
   void endFrame() override;
   void clear(Color_rgb color) override;
+
+  static Camera2D toRaylibCamera(const CameraData &camera);
 
   void beginCamera(const CameraData &camera) override;
   void endCamera() override;

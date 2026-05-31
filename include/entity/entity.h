@@ -15,7 +15,7 @@ public:
   Entity(Entity &&other) = default;
   Entity &operator=(const Entity &other) = default;
 
-  void clampToWorld(const Rect& rect);
+  void clampToWorld(const Rect &rect);
   virtual ~Entity() = default;
   // Draw the Entity onto the screen
   // @param renderer - The current backend renderer
@@ -34,5 +34,5 @@ public:
 
 protected:
   Vec2 m_position = {.x = 0.0f, .y = 0.0f};
-  Rect m_hitBox;
+  Rect m_hitBox = {0, 0, 50.f, 50.f};
 };

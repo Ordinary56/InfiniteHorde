@@ -4,6 +4,7 @@
 #include "core/settings.h"
 #include "platform/platform.h"
 #include "scene/scene.h"
+#include <iostream>
 bool Game::m_shutdownRequested = false;
 bool Game::m_sceneChangeRequested = false;
 SCENES Game::m_pendingScene;
@@ -35,6 +36,24 @@ void Game::run() {
     m_renderer.endFrame();
   }
 }
+
+#ifdef CPORTA
+void Game::run_once() {
+  if (m_sceneChangeRequested) {
+    std::cout << "SCENE CHANGE REQUESTED\n";
+    m_renderer.clear(COLOR_BLACK);
+    m_sceneManager.setScene(m_pendingScene);
+    m_sceneChangeRequested = false;
+    return;
+  }
+  float dt = m_platform.getDeltaTime();
+  m_sceneManager.update(dt);
+  m_renderer.beginFrame();
+  m_renderer.clear(COLOR_WHITE);
+  m_sceneManager.draw(m_renderer);
+  m_renderer.endFrame();
+}
+#endif
 
 void Game::requestSceneChange(SCENES scene) {
   m_sceneChangeRequested = true;

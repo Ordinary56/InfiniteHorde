@@ -14,6 +14,14 @@ public:
   ~GameplayScene() = default;
   void update(float dt) override;
   void draw(Renderer &renderer) const override;
+#ifdef CPORTA
+  const Player &getPlayer() const { return m_player; }
+  const ProjectileManager &getProjectileManager() const {
+    return m_projectileManager;
+  }
+  EnemyManager &getEnemyManager() { return m_enemyManager; }
+  int getScoreCount() const { return m_score; }
+#endif
 
 private:
   void drawUI(Renderer &renderer) const;

@@ -1,0 +1,41 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Projectile {
+	+Projectile()
+	+Projectile(float x, float y)
+	-m_direction : Vec2
+	+getDamage() : float {query}
+	-m_damage : float
+	-m_speed : float
+	+draw(Renderer& renderer) : void {query}
+	+setDirection(const Vec2& angle) : void
+	+setSpeed(float value) : void
+	+update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

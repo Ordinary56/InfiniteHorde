@@ -6,21 +6,23 @@ Enemy::Enemy() : Entity() {}
 Enemy::Enemy(float x, float y) : Entity(x, y) {}
 
 void Enemy::walkTo(const Vec2 &direction) {
-  m_lastPosition.x = direction.x;
-  m_lastPosition.y = direction.y;
+  m_targetPosition.x = direction.x;
+  m_targetPosition.y = direction.y;
 }
 
 void Enemy::update(float dt) {
-  (void)dt;
-  Vec2 target = utils::lerp(m_position, m_lastPosition, 1.0f);
-  setPos(target.x, target.y);
+  if(m_isDead) {
+    return;
+  }
+  Vec2 target = utils::lerp(m_position, m_targetPosition, dt * 0.2f);
+  m_position.x += target.x;
+  m_position.y += target.y;
+  m_hitBox.x = m_position.x;
+  m_hitBox.y = m_position.y;
 }
 
 bool Enemy::checkPlayerCollision(const Rect &hitbox) {
-  if (utils::checkAABB(m_hitBox, hitbox)) {
-    return true;
-  }
-  return false;
+  return utils::checkAABB(hitbox, m_hitBox);
 }
 
 void Enemy::takeDamage(float value) {

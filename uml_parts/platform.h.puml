@@ -1,0 +1,36 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class Platform {
+	+~Platform()
+	+{abstract} shouldClose() : bool
+	+{abstract} getDeltaTime() : float
+	+{abstract} initWindow(int w, int h, const char* title) : void
+	+{abstract} shutdownWindow() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

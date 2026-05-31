@@ -1,0 +1,42 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class ProjectileManager {
+	+ProjectileManager()
+	+~ProjectileManager()
+	-m_projectiles : Projectile*
+	+checkEnemyHit(const Rect& hitbox) : bool
+	-m_capacity : std::size_t
+	-m_count : std::size_t
+	+checkInBounds(const GameWorld& world) : void
+	+draw(Renderer& renderer) : void {query}
+	+remove(std::size_t index) : void
+	+spawn(const Projectile& proj) : void
+	+update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

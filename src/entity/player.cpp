@@ -1,5 +1,11 @@
 #include "entity/player.h"
+
+#ifndef CPORTA
 #include "core/input/raylibInputSystem.h"
+#else
+#include "core/input/consoleInputSystem.h"
+#endif
+
 #include "core/renderer/renderer.h"
 #include "helpers/utils.hpp"
 
@@ -35,6 +41,8 @@ void Player::update(float dt) {
   if (input.getKeyDown(InputAction::MoveRight)) {
     m_position.x += dt * m_speed * 5;
   }
+  m_hitBox.x = m_position.x;
+  m_hitBox.y = m_position.y;
 }
 
 const Rect &Player::getHitBox() const { return m_hitBox; }
@@ -44,15 +52,12 @@ const float &Player::getHealth() const { return m_health; }
 bool Player::isDead() const { return m_isDead; }
 
 void Player::takeDamage(float damage) {
-  if (m_damageTimer.isRunning()) {
-    return;
-  }
-  float damageTaken = m_health - damage;
-  m_health = utils::clamp<float>(damageTaken, 0, m_health);
+
+  m_health = utils::clamp<float>(m_health - damage, 0, 100);
   if (m_health == 0) {
     m_isDead = true;
   }
-  m_damageTimer.start(1.25f);
+  m_damageTimer.start(0.75f);
 }
 
 Weapon &Player::getWeapon() { return m_weapon; }

@@ -1,0 +1,48 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class UIButtonBuilder {
+	-m_config : ButtonConfig
+	+build() : UIButton* {query}
+	+color(Color_rgb color) : UIButtonBuilder&
+	+position(Vec2 pos) : UIButtonBuilder&
+	+size(Vec2 size) : UIButtonBuilder&
+	+text(const std::string& text) : UIButtonBuilder&
+}
+
+
+class ButtonConfig {
+	+color : Color_rgb
+	+pos : Vec2
+	+size : Vec2
+	+text : std::string
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+UIButtonBuilder *-- ButtonConfig
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

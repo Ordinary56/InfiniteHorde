@@ -15,7 +15,14 @@ public:
   void run();
   static void requestQuit() { m_shutdownRequested = true; }
   static void requestSceneChange(SCENES scene);
-  
+
+#ifdef CPORTA
+  inline SceneManager &getSceneManager() { return m_sceneManager; }
+  // Used for testing.
+  // similiar to run, but it only ticks once, letting other functions for testing
+  void run_once();
+#endif
+
 private:
   SceneManager m_sceneManager;
   Platform &m_platform;

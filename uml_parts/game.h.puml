@@ -1,0 +1,42 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Game {
+	+Game(Platform& platform, Renderer& renderer)
+	+~Game()
+	-m_platform : Platform&
+	-m_renderer : Renderer&
+	-m_sceneManager : SceneManager
+	-{static} m_pendingScene : static SCENES
+	-{static} m_sceneChangeRequested : static bool
+	-{static} m_shutdownRequested : static bool
+	+{static} requestQuit() : void
+	+{static} requestSceneChange(SCENES scene) : void
+	+run() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

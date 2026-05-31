@@ -1,0 +1,39 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Weapon {
+	+Weapon()
+	+Weapon(float x, float y)
+	-m_projectileManager : ProjectileManager*
+	-m_mouseToWorldPos : Vec2
+	+draw(Renderer& renderer) : void {query}
+	+setMousePosition(const Vec2& position) : void
+	+setProjectileManager(ProjectileManager* manager) : void
+	+update(float dt) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

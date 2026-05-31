@@ -6,7 +6,7 @@ RaylibInputSystem::RaylibInputSystem() {
   for (int i = 0; i < InputAction::ActionCount; i++) {
     // -1 - unmapped key
     m_keyMaps[i] = -1;
-    m_currentState[i] = false;
+    m_keyDownState[i] = false;
     m_pressedState[i] = false;
   }
 }
@@ -14,8 +14,8 @@ RaylibInputSystem::RaylibInputSystem() {
 void RaylibInputSystem::update() {
   for (int i = 0; i < InputAction::ActionCount; i++) {
     int key = m_keyMaps[i];
-    m_pressedState[i] = IsKeyPressed(key);
-    m_currentState[i] = IsKeyDown(key);
+    m_pressedState[i] = IsKeyPressed(key) || IsMouseButtonPressed(key);
+    m_keyDownState[i] = IsKeyDown(key) || IsMouseButtonDown(key);
   }
 }
 
@@ -28,5 +28,5 @@ bool RaylibInputSystem::getKeyPressed(InputAction action) {
 }
 
 bool RaylibInputSystem::getKeyDown(InputAction action) {
-  return m_currentState[static_cast<int>(action)];
+  return m_keyDownState[static_cast<int>(action)];
 }

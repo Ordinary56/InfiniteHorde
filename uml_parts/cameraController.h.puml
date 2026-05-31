@@ -1,0 +1,38 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class CameraController {
+	+CameraController()
+	+CameraController(const Vec2& offset_vec)
+	+~CameraController()
+	-m_camera : CameraData
+	+getCamera() : CameraData& {query}
+	+setOffset(const Vec2& new_offset) : void
+	+setTarget(const Vec2& target_vec) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

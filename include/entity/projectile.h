@@ -16,9 +16,6 @@ public:
 
   // Get the projectile's damage
   // @returns - the projectile's current damage
-  // TODO: make an event when it collides with an enemy
-  // TIP: use the generic EventManager, and use invoke() to fire it when
-  // collision happens
   float getDamage() const;
 
   // Sets the projectile's speed
@@ -30,10 +27,10 @@ public:
 
 private:
   // default speed
-  float m_speed = 10.5f;
+  float m_speed = 60.f;
 
   // default damage
-  float m_damage = 5.f;
+  float m_damage = 50.f;
   // The normalized direction the projectile takes
   Vec2 m_direction;
 };

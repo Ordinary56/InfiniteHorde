@@ -1,0 +1,35 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class CameraData {
+	+offset : Vec2
+	+target : Vec2
+	+rotation : float
+	+zoom : float
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class SpriteManager {
+	+SpriteManager()
+	+~SpriteManager()
+	+getSprite(const std::string& name) : Image*
+	-m_sprites : SpriteEntry*
+	-m_capacity : std::size_t
+	-m_size : std::size_t
+	-grow() : void
+	+loadSprites(const std::string& folder) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
